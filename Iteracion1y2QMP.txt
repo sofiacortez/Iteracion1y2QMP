@@ -1,0 +1,182 @@
+
+class Prenda {
+  TipoPrenda tipo;
+  Material material;
+  Color colorPrimario;
+  Color colorSecundario;
+  Trama trama = Trama.LISA;
+
+  Prenda(TipoPrenda tipo, Material material, Color colorPrimario, Color colorSecundario, Trama trama) {
+
+    this.tipo = tipo;
+    this.material = material;
+    this.colorPrimario = colorPrimario;
+    this.colorSecundario = colorSecundario;
+    this.trama = trama;
+  }
+}
+
+enum TipoPrenda {
+
+  ZAPATO(Categoria.CALZADO),
+  CAMISA(Categoria.PARTE_SUPERIOR),
+  PANTALON(Categoria.PARTE_INFERIOR);
+  //etc.
+
+  Categoria categoria;
+
+  TipoPrenda(Categoria categoria) {
+    this.categoria = categoria;
+  }
+}
+
+enum Categoria {
+  PARTE_SUPERIOR,
+  PARTE_INFERIOR,
+  CALZADO,
+  ACCESORIOS
+}
+
+enum Material {
+  CUERO, JEAN, CORDEROI, POLAR
+  //etc.
+}
+
+class Color {
+  String codigo;
+}
+
+enum Trama {
+  LISA, RAYADA, CON_LUNARES, A_CUADROS, ESTAMPADO
+  //etc.
+}
+
+---------BORRADOR---------
+
+//Me falto implementar el requerimiento de que haya consistencia entre el material y el tipo de prenda pero no se me ocurrio. O se me ocurrian cosas muy feas.
+
+class Borrador {
+  TipoPrenda tipo;
+  Material material;
+  Color colorPrimario;
+  Color colorSecundario;
+  Trama trama = Trama.LISA;
+
+  Borrador(TipoPrenda tipo) {
+    verificarTipoNoNulo(tipo);
+    this.tipo = tipo;
+  }
+
+  void setearMaterial(Material material) {
+    verificarMaterialNoNulo(material);
+    this.material = material;
+  }
+
+  void setarColorPrimario(Color colorPrimario) {
+    verificarColorPrimarioNoNulo(colorPrimario);
+    this.colorPrimario = colorPrimario;
+  }
+
+  void setearColorSecundario(Color colorSecundario) {
+    this.colorSecundario = colorSecundario;
+  }
+
+  void setearTrama(Trama trama) {
+    this.trama = trama;
+  }
+
+  Prenda configurarPrenda() {
+    return new Prenda(tipo, material, colorPrimario, colorSecundario, trama);
+  }
+
+  void verificarTipoNoNulo(TipoPrenda tipo) {
+    if (tipo == null)
+      throw new tipoIncompletoException("Falta completar el campo de tipo de prenda");
+  }
+
+  void verificarMaterialNoNulo(Material material) {
+    if (material == null)
+      throw new materialIncompletoException("Falta completar el campo de material");
+  }
+
+  void verificarColorPrimarioNoNulo(Color colorPrimario) {
+    if (colorPrimario == null)
+      throw new colorPrimarioIncompletoException("Falta completar el campo de color primario");
+  }
+
+}
+
+class tipoIncompletoException extends RuntimeException {
+  tipoIncompletoException(String causa) {
+    super(causa);
+  }
+}
+
+class materialIncompletoException extends RuntimeException {
+  materialIncompletoException(String causa) {
+    super(causa);
+  }
+}
+
+class colorPrimarioIncompletoException extends RuntimeException {
+  colorPrimarioIncompletoException(String causa) {
+    super(causa);
+  }
+}
+
+-------------UNIFORME--------------
+
+class Uniforme {
+  Prenda prendaSuperior;
+  Prenda prendaInferior;
+  Prenda calzado;
+
+  Uniforme(Prenda prendaSuperior, Prenda prendaInferior, Prenda calzado) {
+    this.prendaSuperior = prendaSuperior;
+    this.prendaInferior = prendaInferior;
+    this.calzado = calzado;
+  }
+}
+
+//Supongo que hay una forma de hacer algo parecido sin tener que pasar millones de parametros en todos lados,
+//podria hacerlo con una clase abstracta o con una interface pero no llego a pensarlo.
+
+class FabricadorDeUniformes {
+  Prenda prendaSuperior;
+  Prenda prendaInferior;
+  Prenda calzado;
+
+  Prenda configurarPrendaSuperior(TipoPrenda tipo, Material material, Color colorPrimario, Color colorSecundario, Trama trama) {
+    borrador = new Borrador(tipo);
+    borrador.setearMaterial(material);
+    borrador.setearColorPrimario(colorPrimario);
+    borrador.setearColorSecundario(colorSecundario);
+    borrador.setearTrama(trama);
+    return borrador.configurarPrenda();
+  }
+
+  Prenda configurarPrendaInferior(TipoPrenda tipo, Material material, Color colorPrimario, Color colorSecundario, Trama trama) {
+    borrador = new Borrador(tipo);
+    borrador.setearMaterial(material);
+    borrador.setearColorPrimario(colorPrimario);
+    borrador.setearColorSecundario(colorSecundario);
+    borrador.setearTrama(trama);
+    return borrador.configurarPrenda();
+  }
+
+  Prenda configurarCalzado(TipoPrenda tipo, Material material, Color colorPrimario, Color colorSecundario, Trama trama) {
+    borrador = new Borrador(tipo);
+    borrador.setearMaterial(material);
+    borrador.setearColorPrimario(colorPrimario);
+    borrador.setearColorSecundario(colorSecundario);
+    borrador.setearTrama(trama);
+    return borrador.configurarPrenda();
+  }
+
+  Uniforme configurarUniforme(//millones de parametros) {
+    this.configurarPrendaSuperior(//parametros) = prendaSuperior;
+    this.configurarPrendaInferior(//parametros) = prendaInferior;
+    this.configurarCalzado(//parametros) = calzado;
+    return new Uniforme(prendaSuperior, prendaInferior, calzado);
+  }
+}
